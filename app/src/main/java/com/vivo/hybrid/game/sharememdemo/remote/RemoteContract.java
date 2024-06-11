@@ -17,5 +17,7 @@ public interface RemoteContract {
         void sendToClientMessage(String json);
 
         void onSnapshotCallback(Bitmap bitmap);
+
+        void onSnapshotCallbackMyBytes(byte[] bytes);
     }
 }

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.MemoryFile;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.vivo.hybrid.game.sharememdemo.IMemAIDL;
 import com.vivo.hybrid.game.sharememdemo.IMemCallback;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 public class MemFetchStub extends IMemAIDL.Stub implements RemoteContract.ToClient {
     private static final String TAG = MemFetchStub.class.getSimpleName();
 
+    //private static final int MEM_FILE_SIZE = 1024 * 1024 * 100; //1M
     private static final int MEM_FILE_SIZE = 1024 * 1024 * 100; //1M
     private static final String MEM_FILE_NAME = "test";
     private MemoryFile shareMem;
@@ -81,12 +83,40 @@ public class MemFetchStub extends IMemAIDL.Stub implements RemoteContract.ToClie
         if (snapshotCallback != null) {
             try {
                 byte[] buffer = BitmapUtil.Bitmap2Bytes(bitmap);
+                Log.e("Gaudi","333");
+
                 writeBitmap2Mem(buffer);
+
+                Log.e("Gaudi","444");
+
+
                 snapshotCallback.onSnapshotCallback(parcelFileDescriptor, buffer.length);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onSnapshotCallbackMyBytes(byte[] bytes) {
+
+        if (snapshotCallback != null) {
+            try {
+                Log.e("Gaudi","333之前");
+                byte[] buffer = bytes;
+                Log.e("Gaudi","333");
+
+                writeBitmap2Mem(buffer);
+
+                Log.e("Gaudi","444");
+
+
+                snapshotCallback.onSnapshotCallback(parcelFileDescriptor, buffer.length);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     private void writeBitmap2Mem(byte[] buffer) {

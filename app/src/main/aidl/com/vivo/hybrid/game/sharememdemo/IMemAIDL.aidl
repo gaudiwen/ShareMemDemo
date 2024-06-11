@@ -11,4 +11,5 @@ interface IMemAIDL {
      void onMessageCallback(IMsgCallback callback);
 
      void takeSnapshot(IMemCallback callback);
+
 }
